@@ -10,7 +10,6 @@ export default class Livro extends BaseModel {
 
   @column()
   declare autor: string
-
   @column()
   declare genero: string
 

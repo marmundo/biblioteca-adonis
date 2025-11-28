@@ -2,6 +2,7 @@ import { createLivroValidator } from '#validators/livro'
 import type { HttpContext } from '@adonisjs/core/http'
 import Livro from "#models/livro"
 import { DateTime } from 'luxon'
+
 export default class LivrosController {
   /**
    * Display a list of resource
@@ -16,11 +17,10 @@ export default class LivrosController {
    */
   async store({ request }: HttpContext) {
     const payload = await request.validateUsing(createLivroValidator)
-    const data = {
+    const livro = await Livro.create({
       ...payload,
-      dataPublicacao: DateTime.fromJSDate(payload.dataPublicacao as Date),
-    }
-    const livro = await Livro.create(data)
+      dataPublicacao: DateTime.fromJSDate(payload.dataPublicacao)
+    })
     return livro
   }
 
@@ -43,12 +43,11 @@ export default class LivrosController {
     }
 
     const payload = await request.validateUsing(createLivroValidator)
-    const data = {
-      ...payload,
-      dataPublicacao: DateTime.fromJSDate(payload.dataPublicacao as Date),
-    }
 
-    livro.merge(data)
+    livro.merge({
+      ...payload,
+      dataPublicacao: DateTime.fromJSDate(payload.dataPublicacao)
+    })
     await livro.save()
     return livro
   }
