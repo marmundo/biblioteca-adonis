@@ -8,19 +8,21 @@ export default class LivrosController {
    * Display a list of resource
    */
   async index({}: HttpContext) {
-    const livros = await Livro.all()
+    const livros = await Livro.query().preload('user')
     return livros
   }
 
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {
+  async store({ request, auth }: HttpContext) {
     const payload = await request.validateUsing(createLivroValidator)
     const livro = await Livro.create({
       ...payload,
-      dataPublicacao: DateTime.fromJSDate(payload.dataPublicacao)
+      dataPublicacao: DateTime.fromJSDate(payload.dataPublicacao),
+      userId: auth.user!.id
     })
+    await livro.load('user')
     return livro
   }
 
@@ -28,7 +30,7 @@ export default class LivrosController {
    * Show individual record
    */
   async show({ params }: HttpContext) {
-    const livro = await Livro.find(params.id)
+    const livro = await Livro.query().where('id', params.id).preload('user').firstOrFail()
     return livro
   }
 

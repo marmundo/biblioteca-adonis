@@ -1,0 +1,44 @@
+### Registrar usuário
+POST http://localhost:3333/register
+Content-Type: application/json
+
+{
+  "email": "usuario@exemplo.com",
+  "password": "senha123",
+  "fullName": "Nome do Usuário"
+}
+
+### Login
+POST http://localhost:3333/login
+Content-Type: application/json
+
+{
+  "email": "usuario@exemplo.com",
+  "password": "senha123"
+}
+
+### Ver meu perfil (substitua o token)
+GET http://localhost:3333/me
+Authorization: Bearer SEU_TOKEN_AQUI
+
+### Criar livro (substitua o token)
+POST http://localhost:3333/livros
+Authorization: Bearer SEU_TOKEN_AQUI
+Content-Type: application/json
+
+{
+  "titulo": "a vida de vitinho 2",
+  "autor": "joao vitor do graphitao",
+  "genero": "terror",
+  "dataPublicacao": "2025-10-10"
+}
+
+### Listar livros
+GET http://localhost:3333/livros
+
+### Ver livro específico
+GET http://localhost:3333/livros/1
+
+### Logout (substitua o token)
+POST http://localhost:3333/logout
+Authorization: Bearer SEU_TOKEN_AQUI

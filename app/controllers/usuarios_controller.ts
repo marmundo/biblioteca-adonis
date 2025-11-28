@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import User from '#models/user'
 
 export default class UsuariosController {
   /**
@@ -19,7 +20,10 @@ export default class UsuariosController {
   /**
    * Show individual record
    */
-  async show({ params }: HttpContext) {}
+  async show({ params }: HttpContext) {
+    const user = await User.query().where('id', params.id).preload('livros').firstOrFail()
+    return user
+  }
 
   /**
    * Edit individual record
